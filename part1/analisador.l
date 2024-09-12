@@ -3,52 +3,62 @@ numero  [0-9]+
 espaco  [ \t]+
 novalinha [\n]
 
+%x coment
+
+%{
+    int nlin = 1;
+%}
+
 %%
+programa    printf("%3d|%11s: reservada\n", nlin, yytext);
+inicio    printf("%3d|%11s: reservada\n", nlin, yytext);
+fimprograma    printf("%3d|%11s: reservada\n", nlin, yytext);
 
-programa    printf("%11s: reservada\n", yytext);
-inicio    printf("%11s: reservada\n", yytext);
-fimprograma    printf("%11s: reservada\n", yytext);
+leia    printf("%3d|%11s: reservada\n", nlin, yytext);
+escreva    printf("%3d|%11s: reservada\n", nlin, yytext);
 
-leia    printf("%11s: reservada\n", yytext);
-escreva    printf("%11s: reservada\n", yytext);
+se    printf("%3d|%11s: reservada\n", nlin, yytext);
+entao    printf("%3d|%11s: reservada\n", nlin, yytext);
+senao    printf("%3d|%11s: reservada\n", nlin, yytext);
+fimse    printf("%3d|%11s: reservada\n", nlin, yytext);
 
-se    printf("%11s: reservada\n", yytext);
-entao    printf("%11s: reservada\n", yytext);
-senao    printf("%11s: reservada\n", yytext);
-fimse    printf("%11s: reservada\n", yytext);
+enquanto    printf("%3d|%11s: reservada\n", nlin, yytext);
+faca    printf("%3d|%11s: reservada\n", nlin, yytext);
+fimenquanto    printf("%3d|%11s: reservada\n", nlin, yytext);
 
-enquanto    printf("%11s: reservada\n", yytext);
-faca    printf("%11s: reservada\n", yytext);
-fimenquanto    printf("%11s: reservada\n", yytext);
+"+"    printf("%3d|%11s: soma\n", nlin, yytext);
+"-"    printf("%3d|%11s: subtracao\n", nlin, yytext);
+"*"    printf("%3d|%11s: multiplicacao\n", nlin, yytext);
 
-"+"    printf("%11s: soma\n", yytext);
-"-"    printf("%11s: subtracao\n", yytext);
-"*"    printf("%11s: multiplicacao\n", yytext);
+div    printf("%3d|%11s: divisao\n", nlin, yytext);
 
-div    printf("%11s: divisao\n", yytext);
+">"    printf("%3d|%11s: maior\n", nlin, yytext);
+"<"    printf("%3d|%11s: menor\n", nlin, yytext);
+"="    printf("%3d|%11s: igual\n", nlin, yytext);
 
-">"    printf("%11s: maior\n", yytext);
-"<"    printf("%11s: menor\n", yytext);
-"="    printf("%11s: igual\n", yytext);
+e    printf("%3d|%11s: e logico\n", nlin, yytext);
+ou    printf("%3d|%11s: ou logico\n", nlin, yytext);
+nao    printf("%3d|%11s: negacao\n", nlin, yytext);
 
-e    printf("%11s: e logico\n", yytext);
-ou    printf("%11s: ou logico\n", yytext);
-nao    printf("%11s: negacao\n", yytext);
+"<-"    printf("%3d|%11s: atribuicao\n", nlin, yytext);
+"("    printf("%3d|%11s: abre\n", nlin, yytext);
+")"    printf("%3d|%11s: fecha\n", nlin, yytext);
 
-"<-"    printf("%11s: atribuicao\n", yytext);
-"("    printf("%11s: abre\n", yytext);
-")"    printf("%11s: fecha\n", yytext);
+inteiro    printf("%3d|%11s: atributo\n", nlin, yytext);
+logico    printf("%3d|%11s: atributo\n", nlin, yytext);
+"V"    printf("%3d|%11s: logico\n", nlin, yytext);
+"F"    printf("%3d|%11s: logico\n", nlin, yytext);
 
-inteiro    printf("%11s: atributo\n", yytext);
-logico    printf("%11s: atributo\n", yytext);
-"V"    printf("%11s: logico\n", yytext);
-"F"    printf("%11s: logico\n", yytext);
+"//".*  ;
+"/*"    BEGIN(coment);
+<coment>"*/"    BEGIN(INITIAL);
+<coment>.   ;
+<coment>\n  nlin++;
 
-{identificador}    printf("%11s: identificador\n", yytext);
-{numero}    printf("%11s: numero\n", yytext);
+{identificador}    printf("%3d|%11s: identificador\n", nlin, yytext);
+{numero}    printf("%3d|%11s: numero\n", nlin, yytext);
 {espaco}    ;
-{novalinha}    ;
-.    printf("%11s: nao reconhecido\n", yytext);
+{novalinha}    nlin++;
 
 %%
 
